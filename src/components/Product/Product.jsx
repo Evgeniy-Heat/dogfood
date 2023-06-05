@@ -1,49 +1,137 @@
-import React, { useEffect } from 'react'
-import s from './index.module.css'
-import { Link, NavLink, Navigate, useLocation, useNavigate } from 'react-router-dom'
-import { BackNavigate } from '../BackNavigate/BackNavigate';
+import React from 'react';
+import { useState } from 'react';
+import { Rate } from './../../components/Rate/Rate';
+import truck from './../../images/truck.svg';
+import quality from './../../images/quality.svg';
+import style from './index.module.css';
+import classNames from 'classnames';
+import Review from './../../components/Review/review';
+import { FormReview } from '../FormReview/FormReview';
 
-export const Product = ({ product }) => {
+export const Product = ({ product, setProduct }) => {
+  const [count] = useState(0);
+  const discount_price = Math.round(
+    product.price - (product.price * product.discount) / 100
+  );
 
-    const navigate = useNavigate();
+  const buy = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    console.log('Добавлено в корзину');
+  };
 
-
-    const goBack = () => {
-        // navigate(-2);
-        // navigate(`/product/${product._id}`);
-        navigate('/');
-        // window.history
+  const productRating = (reviews) => {
+    if (!reviews || !reviews?.length) {
+      return 0;
     }
+    const res = reviews.reduce((acc, el) => (acc += el.rating), 0);
+    return Math.floor(res / reviews.length);
+  };
 
-    const location = useLocation();
+  return (
+    <div>
+      <div className={style.title}>{product.name}</div>
+      <div className={style.productInfo}>
+        <span>
+          Артикул: <b>2388907</b>
+        </span>
+        <Rate rating={productRating(product?.reviews)} />
+      </div>
 
-    return (<div className={`${s.product} container`}>
-        <div className={s.titleWrapper}>
-
-        <BackNavigate />
-
-            <span className={s.productTitle}>{product.name}</span>
-            <div className={s.rating}>
-                <span>Artikul</span>
-                <span>Rate</span>
+      <div className={style.product}>
+        <div className={style.imgWrapper}>
+          <img
+            className={style.img_product}
+            src={product.pictures}
+            alt={`Изображение товара`}
+          />
+        </div>
+        <div className={style.desc}>
+          <span className={!!product.discount ? style.oldPrice : style.price}>
+            {product.price} ₽ <p>за 100 грамм</p>
+          </span>
+          {!!product.discount && (
+            <span
+              className={classNames(style.price, style['price_type_discount'])}
+            >
+              {discount_price}₽
+            </span>
+          )}
+          <div className={style.btnWrap}>
+            <div className={style.btnLeft}>
+              <button className={style.minus}> - </button>
+              <span className={style.amount}>{count}</span>
+              <button className={style.plus}> + </button>
             </div>
+            <button className='btn' onClick={buy}>
+              В корзину
+            </button>
+          </div>
+          <div className={style.delivery}>
+            <img src={truck} aria-hidden='true' alt='Доставка' />
+            <div className={style.right}>
+              <h3 className={style.name}>Доставка по всему Миру!</h3>
+              <p className={style.text}>
+                Доставка курьером - <span className={style.bold}>от 399 ₽</span>
+              </p>
+              <p className={style.text}>
+                Доставка в пункт выдачи -{' '}
+                <span className={style.bold}>от 199 ₽</span>
+              </p>
+            </div>
+          </div>
+          <div className={style.delivery}>
+            <img src={quality} aria-hidden='true' alt='' />
+            <div className={style.right}>
+              <h3 className={style.name}>Гарантия качества</h3>
+              <p className={style.text}>
+                Если вам не понравилось качество нашей продукции, мы вернем
+                деньги, либо сделаем все возможное, чтобы удовлетворить ваши
+                нужды
+              </p>
+            </div>
+          </div>
         </div>
-        <div className={s.imgWrapper}>
-            <img className={s.img} src={product.pictures} alt="" />
+      </div>
 
+      <div className={style.box}>
+        <h3 className={style.title}>Описание</h3>
+        <p>{product.description}</p>
+        <h3 className={style.title}>Характеристики</h3>
+        <div className={style.grid}>
+          <div className={style.naming}>Вес</div>
+          <div>1 шт. 120-200 грамм</div>
+          <div className={style.naming}>Цена</div>
+          <div> {product.price} ₽ за 100 грамм</div>
+          <div className={style.naming}>Польза</div>
+          <div className={style.description}>
+            <p>
+              Большое содержание аминокислот и микроэлементов оказывает
+              положительное воздействие на общий обмен веществ собаки.
+            </p>
+            <p>Способствуют укреплению десен и жевательных мышц.</p>
+            <p>
+              Развивают зубочелюстной аппарат, отвлекают собаку во время смены
+              зубов.
+            </p>
+            <p>
+              Имеет цельную волокнистую структуру, при разжевывание получается
+              эффект зубной щетки, лучше всего очищает клыки собак.
+            </p>
+            <p>Следует учесть высокую калорийность продукта.</p>
+          </div>
         </div>
+      </div>
+      <h2>Отзывы</h2>
+      <div className='reviews'>
+        {product.reviews &&
+          product.reviews.length > 0 &&
+          product.reviews.map((el, i) => <Review {...el} key={i} />)}
+      </div>
 
-        <div className={s.desc}>
-            <span className={s.price}>{product.price}&nbsp;p</span>
-        </div>
-        <div className={s.desc}>
-            <NavLink className={(res) =>
-                res.isPending ? "pending" : res.isActive ? s.link : ""
-            }>
-
-                <span className={s.price}>Описание</span>
-            </NavLink>
-            <span>{product.description}</span>
-        </div>
-    </div>)
-}
+      <div className={style.form}>
+        <FormReview product={product} setProduct={setProduct} />
+      </div>
+    </div>
+  );
+};

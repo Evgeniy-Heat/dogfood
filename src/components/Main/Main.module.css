@@ -12,7 +12,7 @@
 }
 
 .card-advertisement1 {
-  width: 100%;
+  width: 80%;
   height: 431px;
   margin: 20px auto;
   background-image: url('./../../images/513-bg.png');
@@ -29,7 +29,7 @@
   height: 180px;
   background-repeat: no-repeat;
   background-position: center;
-  background-image: url('./../../images/reklama1.png');
+  background-image: url('./../../images/advertisement1.png');
 }
 
 .card-advertisement3 {
@@ -41,10 +41,13 @@
   height: 300px;
   background-repeat: no-repeat;
   background-position: center;
-  background-image: url('./../../images/reklama2.png');
+  background-image: url('./../../images/advertisement2.png');
 }
 
 @media (max-width: 768px) {
+  .main-container {
+    padding: 0 5px;
+  }
   .cards-home {
     grid-template-columns: repeat(1, 1fr);
     gap: 10px;
@@ -64,15 +67,19 @@
 }
 
 @media (max-width: 450px) {
+  .main-container {
+    padding: 0 5px;
+  }
   .cards-home {
     grid-template-columns: repeat(1, 1fr);
-    gap: 10px;
+    gap: 5px;
   }
 
   .card-advertisement1 {
     width: 300px;
     background-size: contain;
     padding: 5px;
+    height: 90px;
   }
 
   .card-advertisement2 {

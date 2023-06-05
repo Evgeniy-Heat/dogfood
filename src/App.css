@@ -1,3 +1,30 @@
 .App {
   width: 100%;
 }
+
+.content {
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+@media (max-width: 768px) {
+  .App {
+    max-width: 99%;
+  }
+  .content {
+    padding-top: 20px;
+    padding-bottom: 20px;
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 400px) {
+  .App {
+    max-width: 99%;
+  }
+  .content {
+    padding-top: 20px;
+    padding-bottom: 20px;
+    max-width: 100%;
+  }
+}
