@@ -4,14 +4,17 @@ import { Footer } from './components/Footer/Footer';
 import { Header } from './components/Header/Header';
 import { MainPage } from './pages/MainPage';
 import { ProductPage } from './pages/ProductPage';
+import { BasketPage } from './pages/BasketPage';
 
 function App() {
+
   return (
     <div className='App'>
       <Header />
       <div className='content'>
         <Routes>
           <Route path='/' element={<MainPage />} />
+          <Route path='/basket' element={<BasketPage />} />
           <Route path='/product/:id' element={<ProductPage />} />
         </Routes>
       </div>
