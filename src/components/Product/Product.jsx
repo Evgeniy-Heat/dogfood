@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext, useEffect } from 'react';
 import { useState } from 'react';
 import { Rate } from './../../components/Rate/Rate';
 import truck from './../../images/truck.svg';
@@ -7,17 +7,65 @@ import style from './index.module.css';
 import classNames from 'classnames';
 import Review from './../../components/Review/review';
 import { FormReview } from '../FormReview/FormReview';
+import { useNavigate } from 'react-router-dom';
+import { Ctx } from '../../context/Ctx';
+import { api } from '../../utils/Api';
+import { Trash3 } from 'react-bootstrap-icons';
 
 export const Product = ({ product, setProduct }) => {
   const [count] = useState(0);
+  const navigate = useNavigate();
+  const { user, setGoods, basket, setBasket } = useContext(Ctx);
   const discount_price = Math.round(
     product.price - (product.price * product.discount) / 100
   );
 
+  useEffect(
+    (id) => {
+      api
+        .getProduct(id)
+        .then((res) => res.json())
+        .then((data) => {
+          setProduct(data);
+        });
+    },
+    [setProduct]
+  );
+
+  const remove = (id) => {
+    api
+      .delProduct(id)
+      .then((res) => res.json())
+      .then((data) => {
+        if (!data.error) {
+          alert(data.name + ' товар удален');
+          setGoods((prev) => prev.filter((g) => g._id !== data._id));
+          navigate(`/catalog`);
+        }
+      });
+  };
+
   const buy = (e) => {
     e.preventDefault();
     e.stopPropagation();
-    console.log('Добавлено в корзину');
+    setBasket((prev) => {
+      const test = prev.filter((el) => el.id === basket._id);
+      if (test.length) {
+        return prev.map((el) => {
+          if (el.id === basket._id) {
+            el.cnt++;
+          }
+          return el;
+        });
+      } else {
+        return [...prev, { id: basket._id, cnt: 1 }];
+      }
+    });
+  };
+  const choiseConfirm = () => {
+    if (window.confirm('Вы действительно хотите удалить товар?')) {
+      return remove();
+    }
   };
 
   const productRating = (reviews) => {
@@ -66,6 +114,11 @@ export const Product = ({ product, setProduct }) => {
             <button className='btn' onClick={buy}>
               В корзину
             </button>
+            {product && product.author && product.author._id === user._id && (
+              <button onClick={choiseConfirm} className='btn'>
+                <Trash3 />
+              </button>
+            )}
           </div>
           <div className={style.delivery}>
             <img src={truck} aria-hidden='true' alt='Доставка' />

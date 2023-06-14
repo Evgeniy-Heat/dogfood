@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Banner } from '../components/Banner/Banner';
 import { Main } from '../components/Main/Main';
-// import { data } from './../data/data.js';
 import { api } from './../utils/Api';
 
 export const MainPage = () => {
