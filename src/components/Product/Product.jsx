@@ -57,7 +57,7 @@ export const Product = ({ product, setProduct }) => {
           return el;
         });
       } else {
-        return [...prev, { id: basket._id, cnt: 1,  card: product }];
+        return [...prev, { id: product._id, cnt: 1,  card: product }];
       }
     });
   };

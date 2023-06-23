@@ -120,7 +120,7 @@ class Api {
     }).then(resp);
   }
 
-  // Данные о всех пользователях
+  // Данные о пользователе
   getUsers() {
     return fetch(`${this.path}/v2/${this.group}/users`, {
       headers: this.headers,

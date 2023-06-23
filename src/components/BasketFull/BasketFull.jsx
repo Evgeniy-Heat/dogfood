@@ -29,7 +29,7 @@ export const BasketFull = ({ basket }) => {
               </td>
               <td className='fw-bold fs-3'>
                 {basket.reduce((acc, el, i) => {
-                  acc += el.cnt * basket[i].card.price;
+                  acc += el.cnt * basket[i].price;
                   return acc;
                 }, 0)}
                 ₽
