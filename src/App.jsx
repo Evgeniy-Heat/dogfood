@@ -19,7 +19,6 @@ function App() {
   const [user, setUser] = useState(usr);
   const [token, setToken] = useState(localStorage.getItem('token12'));
   const [goods, setGoods] = useState([]);
-  const [visibleGoods, setVisibleGoods] = useState(goods);
   const [favorites, setFavorites] = useState([]);
   const [authors] = useState([]);
   const [basket, setBasket] = useState(
@@ -29,7 +28,7 @@ function App() {
   );
 
   useEffect(() => {
-    setVisibleGoods(goods);
+    setGoods(goods);
   }, [goods]);
 
   useEffect(() => {
@@ -41,13 +40,11 @@ function App() {
     token,
     api,
     goods,
-    visibleGoods,
     favorites,
     setUser,
     setToken,
     setApi,
     setGoods,
-    setVisibleGoods,
     setFavorites,
     basket,
     setBasket,

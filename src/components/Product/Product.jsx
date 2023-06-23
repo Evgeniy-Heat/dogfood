@@ -7,15 +7,15 @@ import style from './index.module.css';
 import classNames from 'classnames';
 import Review from './../../components/Review/review';
 import { FormReview } from '../FormReview/FormReview';
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 import { Ctx } from '../../context/Ctx';
 import { api } from '../../utils/Api';
-import { Trash3 } from 'react-bootstrap-icons';
+// import { Trash3 } from 'react-bootstrap-icons';
 
 export const Product = ({ product, setProduct }) => {
   const [count] = useState(0);
-  const navigate = useNavigate();
-  const { user, setGoods, basket, setBasket } = useContext(Ctx);
+//   const navigate = useNavigate();
+  const { basket, setBasket } = useContext(Ctx);
   const discount_price = Math.round(
     product.price - (product.price * product.discount) / 100
   );
@@ -24,7 +24,6 @@ export const Product = ({ product, setProduct }) => {
     (id) => {
       api
         .getProduct(id)
-        .then((res) => res.json())
         .then((data) => {
           setProduct(data);
         });
@@ -32,18 +31,18 @@ export const Product = ({ product, setProduct }) => {
     [setProduct]
   );
 
-  const remove = (id) => {
-    api
-      .delProduct(id)
-      .then((res) => res.json())
-      .then((data) => {
-        if (!data.error) {
-          alert(data.name + ' товар удален');
-          setGoods((prev) => prev.filter((g) => g._id !== data._id));
-          navigate(`/catalog`);
-        }
-      });
-  };
+//   const remove = (id) => {
+//     api
+//       .delProduct(id)
+//       .then((res) => res.json())
+//       .then((data) => {
+//         if (!data.error) {
+//           alert(data.name + ' товар удален');
+//           setGoods((prev) => prev.filter((g) => g._id !== data._id));
+//           navigate(`/catalog`);
+//         }
+//       });
+//   };
 
   const buy = (e) => {
     e.preventDefault();
@@ -58,15 +57,11 @@ export const Product = ({ product, setProduct }) => {
           return el;
         });
       } else {
-        return [...prev, { id: basket._id, cnt: 1 }];
+        return [...prev, { id: basket._id, cnt: 1,  card: product }];
       }
     });
   };
-  const choiseConfirm = () => {
-    if (window.confirm('Вы действительно хотите удалить товар?')) {
-      return remove();
-    }
-  };
+
 
   const productRating = (reviews) => {
     if (!reviews || !reviews?.length) {
@@ -114,12 +109,7 @@ export const Product = ({ product, setProduct }) => {
             <button className='btn' onClick={buy}>
               В корзину
             </button>
-            {product && product.author && product.author._id === user._id && (
-              <button onClick={choiseConfirm} className='btn'>
-                <Trash3 />
-              </button>
-            )}
-          </div>
+             </div>
           <div className={style.delivery}>
             <img src={truck} aria-hidden='true' alt='Доставка' />
             <div className={style.right}>

@@ -7,26 +7,25 @@ import { Ctx } from '../../context/Ctx';
 
 export const Card = ({ card }) => {
   const { setBasket } = useContext(Ctx);
-    
+
   const buy = (e) => {
     e.preventDefault();
     e.stopPropagation();
     setBasket((prev) => {
-      const test = prev.filter((el) => el.id === e._id);
+      const test = prev.filter((el) => el.id === card._id);
       if (test.length) {
         return prev.map((el) => {
-          if (el.id === e._id) {
+          if (el.id === card._id) {
             el.cnt++;
           }
           return el;
         });
       } else {
-        return [...prev, { id: e._id, cnt: 1 }];
+        return [...prev, { id: card._id, cnt: 1, card: card }];
       }
     });
   };
 
-  
   return (
     <div className='card'>
       <div className='card__sticky card__sticky_type_top-left'>
@@ -44,7 +43,9 @@ export const Card = ({ card }) => {
           className='card__image'
         />
         <div className='card__desc'>
-          {!!card.discount && <span className='card__old-price'>{card.price}₽</span>}
+          {!!card.discount && (
+            <span className='card__old-price'>{card.price}₽</span>
+          )}
           <span className='card__wight'>{card.wight}</span>
           <span className='card__wight'>в наличии: {card.stock} шт</span>
         </div>
